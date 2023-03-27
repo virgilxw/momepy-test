@@ -2,3 +2,4 @@ cache/*
 _pycache_/*
 urbantypes*
 out/*
+*.env
