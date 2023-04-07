@@ -1,5 +1,5 @@
-cache/*
+cache/
 _pycache_/*
 urbantypes*
-out/*
+out/
 *.env
