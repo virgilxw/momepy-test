@@ -5,11 +5,10 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
-// Palette
-// rgb(204, 213, 174)
-//rgb(233, 237, 201)
-//rgb(254, 250, 224)
-//rgb(250, 237, 205)
+// Palette rgb(247, 236, 222)
+//  rgb(233, 218, 193)
+//rgb(158, 210, 198)
+//rgb(84, 186, 185)
 
 export default function Home() {
 
@@ -37,45 +36,22 @@ export default function Home() {
         alignItems="stretch"
         spacing={0}
         className="grid-parent">
-        <Grid
-          xs={2.5}
-          container
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="stretch"
-          className="grid-parent">
-          
-          <div className="header">
-            test
-          </div>
+        <Grid item xs={0.5} sx={{ width: '15px', backgroundColor: 'rgb(96, 150, 180)' }} className="columns">
+          <h1 className="text-3xl font-bold underline">
+            Hello world!
+          </h1>
 
-          <Grid container
-            direction="row"
-            spacing={0}>
-            <Grid
-              container
-              direction="row"
-              alignItems="stretch"
-              spacing={0}
-              className="grid-parent">
-              <Grid item xs={2} sx={{ minwidth: '30px', backgroundColor: 'rgb(204, 213, 174)' }} className="columns">
-                <h1 className="text-3xl font-bold underline">
-                  Hello world!
-                </h1>
+        </Grid>
+        <Grid item sx={{ width: '300px', backgroundColor: 'rgb(147, 191, 207)' }} className="columns">
+          <h1 className="text-3xl font-bold underline">
+            Hello world!
+          </h1>
 
-              </Grid>
-              <Grid item xs={10} sx={{ minwidth: '300px', backgroundColor: 'rgb(233, 237, 201)' }} className="columns">
-                <h1 className="text-3xl font-bold underline">
-                  Hello world!
-                </h1>
-              </Grid>
-            </Grid>
-          </Grid>
         </Grid>
         <Grid item sx={{ flexGrow: 1, backgroundColor: 'green' }} className="columns">
           <div ref={mapContainer} className="map-container" />
         </Grid>
-        <Grid item xs={2} sx={{ minwidth: '300px', backgroundColor: 'rgb(233, 237, 201)' }} className="columns">
+        <Grid item sx={{ width: '300px', backgroundColor: 'rgb(147, 191, 207)' }} className="columns">
           {/* Right sidebar */}
         </Grid>
       </Grid>
