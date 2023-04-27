@@ -2,6 +2,11 @@ import Grid from '@mui/material/Grid';
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import 'mapbox-gl/dist/mapbox-gl.css';
+import dynamic from 'next/dynamic'
+
+const Mapbox = dynamic(() => import('../components/Mapbox'), {
+  loading: () => <p>Loading...</p>,
+})
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
@@ -14,19 +19,9 @@ export default function Home() {
 
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(-70.9);
-  const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(9);
-
-  useEffect(() => {
-    if (map.current) return; // initialize map only once
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [lng, lat],
-      zoom: zoom
-    });
-  });
+  const [lng, setLng] = useState(103.85);
+  const [lat, setLat] = useState(1.29);
+  const [zoom, setZoom] = useState(11);
 
   return (
     <div className='main'>
@@ -49,7 +44,7 @@ export default function Home() {
 
         </Grid>
         <Grid item sx={{ flexGrow: 1, backgroundColor: 'green' }} className="columns">
-          <div ref={mapContainer} className="map-container" />
+          <Mapbox lng={lng} lat={lat} zoom={zoom}/>
         </Grid>
         <Grid item sx={{ width: '300px', backgroundColor: 'rgb(147, 191, 207)' }} className="columns">
           {/* Right sidebar */}

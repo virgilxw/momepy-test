@@ -1,2 +1,0 @@
-daskCluster.close()
-client.shutdown()
