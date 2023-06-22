@@ -45,35 +45,40 @@ const ViolinPlot = ({ width, height, variable }) => {
     }
 
     const [data, setData] = useState(null);
-    const [yScale, setYScale] = useState(() => scaleLinear());
+    const [xScale, setxScale] = useState(() => scaleLinear());
 
     useEffect(() => {
         fetchData().then(keyValues => {
+            
             let data = keyValues[variable]
+
+            if (data === undefined) {
+                return;
+            }
 
             // Calculate the 0.05 and 0.95 percentiles
             let p5 = quantile(data.sort(), 0.05);
             let p95 = quantile(data, 0.95);
 
-            const yS = scaleLinear().domain([p5, p95]).range([0,width]);
+            const xS = scaleLinear().domain([p5, p95]).range([0,width]);
 
             setData(data);
-            setYScale(() => yS);
+            setxScale(() => xS);
 
         }).catch(err => {
             console.error(err);
         });
     }, []);
 
-    if (!data || !yScale) {
+    if (!data || !xScale) {
         return <div>Loading...</div>;
     }
 
     return (
         <svg style={{ width: width*0.9, height: height * 2 }}>
             <ViolinShape
-                width={height}
-                yScale={yScale}
+                height={height}
+                xScale={xScale}
                 data={data}
                 binNumber={10}
             />
@@ -92,7 +97,6 @@ const Sidebar: React.FC<PropsWithChildren<SidebarProps>> = ({ selectedCell, setS
     const sidebarRef = useRef(null);
 
     useEffect(() => {
-        console.log(sidebarRef)
         const handleResize = () => {
             const width = sidebarRef.current.offsetWidth;
             setSidebarWidth(width);
