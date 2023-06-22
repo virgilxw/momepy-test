@@ -6,6 +6,7 @@ type Props = {
   onMenuButtonClick(): void;
 };
 const Navbar = (props: Props) => {
+  
   return (
     <nav
       className={classNames({

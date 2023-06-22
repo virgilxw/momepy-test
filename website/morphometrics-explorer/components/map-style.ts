@@ -21,3 +21,16 @@ export const tessHighlightLayer: FillLayer = {
     'fill-opacity': 0.75
   }
 };
+
+// Highlighted county polygons
+export const tessSelectedLayer: FillLayer = {
+  id: 'tess-selected',
+  type: 'fill',
+  source: 'tess',
+  'source-layer': 'trees',
+  paint: {
+    'fill-outline-color': '#ff0000',
+    'fill-color': '#ffa4a4',
+    'fill-opacity': 0.4
+  }
+};
