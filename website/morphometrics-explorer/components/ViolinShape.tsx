@@ -3,14 +3,14 @@ import * as d3 from "d3";
 type VerticalViolinShapeProps = {
   data: number[];
   binNumber: number;
-  yScale: d3.ScaleLinear<number, number, never>;
-  width: number;
+  xScale: d3.ScaleLinear<number, number, never>;
+  height: number;
 };
 
 export const ViolinShape = ({
   data,
-  yScale,
-  width,
+  xScale,
+  height,
   binNumber,
 }: VerticalViolinShapeProps) => {
   const min = Math.min(...data);
@@ -19,7 +19,7 @@ export const ViolinShape = ({
   const binBuilder = d3
     .bin()
     .domain([min, max])
-    .thresholds(yScale.ticks(binNumber))
+    .thresholds(xScale.ticks(binNumber))
     .value((d) => d);
   const bins = binBuilder(data);
 
@@ -28,13 +28,13 @@ export const ViolinShape = ({
   const wScale = d3
     .scaleLinear()
     .domain([-biggestBin, biggestBin])
-    .range([0, width]);
+    .range([0, height]);
 
   const areaBuilder = d3
     .area<d3.Bin<number, number>>()
     .y0((d) => wScale(-d.length))
     .y1((d) => wScale(d.length))
-    .x((d) => yScale(d.x0 || 0))
+    .x((d) => xScale(d.x0 || 0))
     .curve(d3.curveBumpY);
 
   const areaPath = areaBuilder(bins);
