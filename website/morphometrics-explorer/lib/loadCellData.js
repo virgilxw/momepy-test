@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import Papa from 'papaparse';
+import _ from 'lodash';
 
 const fetchData = async () => {
     // // Fetch the CSV data and process it using Papa.parse
@@ -32,7 +33,7 @@ const fetchData = async () => {
 
 const postsDirectory = path.join(process.cwd(), 'city_data');
 
-export async function loadPlots() {
+export async function loadCellData() {
 
     const fileNames = fs.readdirSync(postsDirectory);
 
@@ -57,28 +58,9 @@ export async function loadPlots() {
 
             }
         })
-        output[fileName] = output_1
+
+        output[fileName.slice(0, -4)] = _.mapValues(output_1,list => _.sampleSize(list, 200))
     })
 
-    let plots = output
-
-    return plots
-
-    // const keyValues = await fetchData();
-
-    // const plots_a = {};
-
-    // for (const key in keyValues) {
-    //     const data = keyValues[key];
-    //     const p5 = quantile(data.sort(), 0.05);
-    //     const p95 = quantile(data, 0.95);
-    //     const xS = scaleLinear().domain([p5, p95]).range([0, width]);
-
-    //     plots_a[key] = {
-    //         data,
-    //         xScale: xS,
-    //     };
-    // }
-
-    // return plots_a
+    return output
 }
