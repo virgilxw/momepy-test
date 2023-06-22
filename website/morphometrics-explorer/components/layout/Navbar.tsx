@@ -2,10 +2,9 @@
 import React from "react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
-type Props = {
-  onMenuButtonClick(): void;
-};
-const Navbar = (props: Props) => {
+
+const Navbar = (props) => {
+
   
   return (
     <nav
