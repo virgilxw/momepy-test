@@ -114,11 +114,17 @@ const inter = Inter({ subsets: ['latin'] });
 //   return <div ref={mapContainer} className="min-w-full min-h-full map-container" />
 
 // }
+interface HomeProps {
+  selectedCell: Dict;
+  setSelectedCell
+}
 
-export default function Home() {
+const Home: React.FC<PropsWithChildren<HomeProps>> = ({ selectedCell, setSelectedCell }) => {
   return (
     <main className={`flex min-h-[16] flex-col items-center ${inter.className}`}>
-      <MapCont />
+      <MapCont selectedCell={selectedCell} setSelectedCell= {setSelectedCell}/>
     </main>
   );
 }
+
+export default Home;

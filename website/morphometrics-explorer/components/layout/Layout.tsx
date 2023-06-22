@@ -1,15 +1,17 @@
 import React, { PropsWithChildren, useState } from "react";
 import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
+
 const Layout = (props: PropsWithChildren) => {
-  const [showSidebar, setShowSidebar] = useState(false);
+
   return (
     <div className="grid min-h-screen grid-rows-header bg-zinc-100">
       <div className="bg-white shadow-sm z-10">
-        <Navbar onMenuButtonClick={() => setShowSidebar((prev) => !prev)} />
+        <Navbar />
       </div>
 
       <div className="grid md:grid-cols-sidebar ">
-        <div className="shadow-md bg-zinc-50">Sidebar</div>
+        <Sidebar selectedCell = {props.children.props.selectedCell} setSelectedCell = {props.children.props.setSelectedCell} />
         {props.children}
       </div>
     </div>
