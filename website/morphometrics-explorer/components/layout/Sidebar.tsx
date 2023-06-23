@@ -21,7 +21,7 @@ const ViolinPlot = ({ city_data, width, height, plotKey, targetValue }) => {
         let p5 = quantile(valueArray.sort(), 0.05);
         let p95 = quantile(valueArray, 0.95);
 
-        const yS = scaleLinear().domain([p5, p95]).range([0, width]);
+        const yS = scaleLinear().domain([p5, p95]).range([0, width * 0.8]);
 
         setData(valueArray);
         setXScale(() => yS);
@@ -32,43 +32,26 @@ const ViolinPlot = ({ city_data, width, height, plotKey, targetValue }) => {
     }
 
     return (
-        <svg style={{ width: width * 0.9, height: height * 2 }}>
-            <ViolinShape
-                height={height}
-                xScale={xScale}
-                data={data}
-                binNumber={10}
-                targetValue = {targetValue}
-            />
-        </svg>
+        <svg style={{ width: width, height: height * 2 }}>
+            <g transform={`translate(${width *0.1}, ${(height * 2) / 2})`}>
+                <ViolinShape
+                    height={height}
+                    xScale={xScale}
+                    data={data}
+                    binNumber={25}
+                    targetValue={targetValue}
+                />
+            </g>
+        </svg >
     );
 }
 
 const Sidebar = ({ city_data, selectedCell, setSelectedCell }) => {
 
-    const [sidebarWidth, setSidebarWidth] = useState(0);
-    const sidebarRef = useRef(null);
-
-    useEffect(() => {
-        const handleResize = () => {
-            const width = sidebarRef.current.offsetWidth;
-            setSidebarWidth(width);
-        };
-
-        // Initial sidebar width
-        handleResize();
-
-        // Event listener for window resize
-        window.addEventListener('resize', handleResize);
-
-        // Cleanup
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+    const sidebarWidth = 266
 
     return (
-        <div ref={sidebarRef} className="sidebar shadow-md bg-zinc-50 overflow-auto">
+        <div className="sidebar shadow-md bg-zinc-50 overflow-y-auto">
             {
                 selectedCell && Object.keys(selectedCell).length > 0 ?
                     Object.entries(selectedCell).map(([key, value]) => (
