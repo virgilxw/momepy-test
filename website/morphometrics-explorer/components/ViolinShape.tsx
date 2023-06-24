@@ -92,7 +92,7 @@ const ViolinPlot = ({ city_data, width, height, plotKey, targetValue }) => {
 
   return (
       <svg style={{ width: width, height: height * 2 }}>
-          <g transform={`translate(${width * 0.1}, ${(height * 2) / 2})`}>
+          <g transform={`translate(${width * 0.15}, ${height})`}>
               <ViolinShape
                   height={height}
                   xScale={xScale}
