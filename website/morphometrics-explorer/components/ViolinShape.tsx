@@ -54,16 +54,16 @@ const ViolinShape = ({
           fillOpacity={0.1}
           strokeWidth={2}
         />
-        {targetValue.map((value) => (
-          <line
-            key={value}
-            x1={xScale(value)}
-            y1={0}
-            x2={xScale(value)}
-            y2={height}
-            stroke="red"
-          />
-        ))}
+        <line
+          key={targetValue[1]}
+          x1={xScale(targetValue[1])}
+          y1={0}
+          x2={xScale(targetValue[1])}
+          y2={height}
+          stroke="red"
+        />
+
+        <rect x={xScale(targetValue[0])} y={0} width={xScale(targetValue[2]) - xScale(targetValue[0])} height={height} fill="red" fillOpacity={0.1} strokeWidth={1} stroke="red" ></rect>
       </>
     );
   }
@@ -118,7 +118,7 @@ const ViolinPlot = ({ city_data, width, height, plotKey, targetValue }) => {
 
   return (
     <svg style={{ width: width, height: height * 2 }}>
-      <g transform={`translate(${width * 0.15}, ${height})`}>
+      <g transform={`translate(${width * 0.1}, ${height})`}>
         <ViolinShape
           height={height}
           xScale={xScale}

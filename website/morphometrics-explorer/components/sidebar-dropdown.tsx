@@ -8,7 +8,6 @@ function classNames(...classes) {
 }
 
 export default function Dropdown({ city_data, width, height, plotKey, targetValues }) {
-    console.log(targetValues)
 
     return (
         <Menu as="div" className="relative mt-5 text-left">
@@ -28,12 +27,14 @@ export default function Dropdown({ city_data, width, height, plotKey, targetValu
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Menu.Items className="absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none w-full">
                     <div className="py-1">
                         <Menu.Item>
                             <p className='text-gray-700 block px-4 py-2 text-sm'>THIS VARIABLE MEASURES THE X Y Z</p>
                         </Menu.Item>
                         <Menu.Item>
+                            <>
+                            <p className='text-gray-700 block px-4 py-2 text-sm'>Distribution of nearby cells</p>
                             <ViolinPlot
                                 city_data={city_data}
                                 width={width}
@@ -41,32 +42,10 @@ export default function Dropdown({ city_data, width, height, plotKey, targetValu
                                 plotKey={plotKey}
                                 targetValue={[targetValues[25], targetValues[50], targetValues[75]]}
                             />
+                            </>
                         </Menu.Item>
                         <Menu.Item>
-                            {({ active }) => (
-                                <a
-                                    href="#"
-                                    className={classNames(
-                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
-                                >
-                                    Support
-                                </a>
-                            )}
-                        </Menu.Item>
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a
-                                    href="#"
-                                    className={classNames(
-                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
-                                >
-                                    License
-                                </a>
-                            )}
+                            <p className='text-gray-700 block px-4 py-2 text-sm'>Note: The violin plot is generated from a random sample of values, outlier values may therefore be higher or lower than the plot.</p>
                         </Menu.Item>
                     </div>
                 </Menu.Items>
