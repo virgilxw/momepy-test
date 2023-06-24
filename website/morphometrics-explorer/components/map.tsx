@@ -11,7 +11,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
   const [lng, setLng] = useState(103.851959);
   const [lat, setLat] = useState(1.290270);
-  const [zoom, setZoom] = useState(10);
+  const [zoom, setZoom] = useState(14);
 
 
   const [hoverInfo, setHoverInfo] = useState(null);
@@ -73,7 +73,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
           longitude: lng,
           zoom: zoom
         }}
-        minZoom={2}
+        minZoom={14}
         mapStyle="mapbox://styles/mapbox/light-v9"
         mapboxAccessToken={MAPBOX_TOKEN}
         onMouseMove={onHover}
