@@ -33,6 +33,36 @@ const fetchData = async () => {
 
 const postsDirectory = path.join(process.cwd(), 'city_data');
 
+
+// Stratified Sampling Function
+function stratifiedSample(data, totalSampleSize) {
+    // Find min, max, and range for categorization
+    let min = _.min(data);
+    let max = _.max(data);
+    let range = max - min;
+
+    // Categorize function
+    function categorize(value) {
+        if (value < min + range / 3) return 'low';
+        if (value < min + 2 * range / 3) return 'medium';
+        return 'high';
+    }
+
+    // Create the groups
+    let groups = _.groupBy(data, categorize);
+
+    // Sample from each group
+    let sample = [];
+    for (let category in groups) {
+        let group = groups[category];
+        let groupSampleSize = Math.round(totalSampleSize * group.length / data.length);
+        let groupSample = _.sampleSize(group, groupSampleSize);
+        sample = sample.concat(groupSample);
+    }
+
+    return sample;
+}
+
 export async function loadCellData() {
 
     const fileNames = fs.readdirSync(postsDirectory);
@@ -59,7 +89,7 @@ export async function loadCellData() {
             }
         })
 
-        output[fileName.slice(0, -4)] = _.mapValues(output_1,list => _.sampleSize(list, 200))
+        output[fileName.slice(0, -4)] = _.mapValues(output_1,list => stratifiedSample(list, 200))
     })
 
     return output
