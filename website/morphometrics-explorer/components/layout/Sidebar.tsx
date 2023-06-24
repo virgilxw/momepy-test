@@ -52,7 +52,7 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell }) => {
                                 width={sidebarWidth}
                                 height={50}
                                 plotKey={key}
-                                targetValue={value} />
+                                targetValues={value} />
                         </div>
                     )) : null
             }
