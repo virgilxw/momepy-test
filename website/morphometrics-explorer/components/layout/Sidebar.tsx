@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import ViolinPlot from "../ViolinShape";
-import { loadPlots } from "../lib/loadPlots.js";
-import { Dropdown } from "../sidebar-dropdown";
+import Dropdown from "../sidebar-dropdown";
 
 const Sidebar = ({ city_data, selectedCell, setSelectedCell }) => {
 
@@ -49,7 +48,11 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell }) => {
                                 plotKey={key}
                                 targetValue={value["base"]}
                             />
-                            {/* <Dropdown /> */}
+                            <Dropdown city_data={city_data["singapore"]}
+                                width={sidebarWidth}
+                                height={50}
+                                plotKey={key}
+                                targetValue={value} />
                         </div>
                     )) : null
             }
