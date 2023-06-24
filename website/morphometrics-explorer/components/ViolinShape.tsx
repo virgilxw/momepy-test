@@ -43,6 +43,32 @@ const ViolinShape = ({
 
   const areaPath = areaBuilder(bins);
 
+  if (Array.isArray(targetValue)) {
+    return (
+      <>
+        <path
+          d={areaPath || undefined}
+          opacity={1}
+          stroke="#9a6fb0"
+          fill="#9a6fb0"
+          fillOpacity={0.1}
+          strokeWidth={2}
+        />
+        {targetValue.map((value) => (
+          <line
+            key={value}
+            x1={xScale(value)}
+            y1={0}
+            x2={xScale(value)}
+            y2={height}
+            stroke="red"
+          />
+        ))}
+      </>
+    );
+  }
+
+
   return (
     <>
       <path
@@ -73,35 +99,35 @@ const ViolinPlot = ({ city_data, width, height, plotKey, targetValue }) => {
 
   useEffect(() => {
 
-      if (valueArray == undefined) {
-          return
-      }
-      // Calculate the 0.05 and 0.95 percentiles
-      let p5 = quantile(valueArray.sort(), 0.05);
-      let p95 = quantile(valueArray, 0.95);
+    if (valueArray == undefined) {
+      return
+    }
+    // Calculate the 0.05 and 0.95 percentiles
+    let p5 = quantile(valueArray.sort(), 0.05);
+    let p95 = quantile(valueArray, 0.95);
 
-      const yS = scaleLinear().domain([p5, p95]).range([0, width * 0.8]);
+    const yS = scaleLinear().domain([p5, p95]).range([0, width * 0.8]);
 
-      setData(valueArray);
-      setXScale(() => yS);
+    setData(valueArray);
+    setXScale(() => yS);
   }, [])
 
   if (!data || !xScale) {
-      return <div>Loading...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
-      <svg style={{ width: width, height: height * 2 }}>
-          <g transform={`translate(${width * 0.15}, ${height})`}>
-              <ViolinShape
-                  height={height}
-                  xScale={xScale}
-                  data={data}
-                  binNumber={25}
-                  targetValue={targetValue}
-              />
-          </g>
-      </svg >
+    <svg style={{ width: width, height: height * 2 }}>
+      <g transform={`translate(${width * 0.15}, ${height})`}>
+        <ViolinShape
+          height={height}
+          xScale={xScale}
+          data={data}
+          binNumber={25}
+          targetValue={targetValue}
+        />
+      </g>
+    </svg >
   );
 }
 

@@ -39,25 +39,7 @@ export default function Dropdown({ city_data, width, height, plotKey, targetValu
                                 width={width}
                                 height={height}
                                 plotKey={plotKey}
-                                targetValue={targetValues[25]}
-                            />
-                        </Menu.Item>
-                        <Menu.Item>
-                            <ViolinPlot
-                                city_data={city_data}
-                                width={width}
-                                height={height}
-                                plotKey={plotKey}
-                                targetValue={targetValues[50]}
-                            />
-                        </Menu.Item>
-                        <Menu.Item>
-                            <ViolinPlot
-                                city_data={city_data}
-                                width={width}
-                                height={height}
-                                plotKey={plotKey}
-                                targetValue={targetValues[75]}
+                                targetValue={[targetValues[25], targetValues[50], targetValues[75]]}
                             />
                         </Menu.Item>
                         <Menu.Item>
