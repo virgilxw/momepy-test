@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import ViolinPlot from "../ViolinShape";
 import Dropdown from "../sidebar-dropdown";
 
-const Sidebar = ({ city_data, selectedCell, setSelectedCell }) => {
+const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID }) => {
 
     const sidebarWidth = 266
     const [nestedCellData, setNestedCellData] = useState({});
@@ -35,6 +35,8 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell }) => {
 
     return (
         <div className="sidebar shadow-md bg-zinc-50 overflow-y-auto">
+            <h2>cell uID: {clusterID.uID} </h2>
+            <h3>ClusterID: {clusterID.clusterID} </h3>
             {
                 nestedCellData && Object.keys(nestedCellData).length > 0 ?
                     Object.entries(nestedCellData).map(([key, value]) => (

@@ -23,13 +23,13 @@ interface HomeProps {
   setSelectedCell
 }
 
-const Home: React.FC<PropsWithChildren<HomeProps>> = ({ city_data, selectedCell, setSelectedCell }) => {
+const Home: React.FC<PropsWithChildren<HomeProps>> = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID }) => {
 
 
   return (
-    <Layout city_data={city_data} selectedCell={selectedCell} setSelectedCell={setSelectedCell} >
+    <Layout city_data={city_data} selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} >
       <main className={`flex min-h-[16] flex-col items-center ${inter.className}`}>
-        <MapCont selectedCell={selectedCell} setSelectedCell={setSelectedCell} />
+        <MapCont selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} />
       </main>
     </Layout>
   );

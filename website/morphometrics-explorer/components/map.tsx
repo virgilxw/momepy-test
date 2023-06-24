@@ -7,12 +7,7 @@ import { tessPolyLayer, tessHighlightLayer, tessSelectedLayer } from '../compone
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_mapboxglaccessToken; // Set your mapbox token here
 
-interface MapContProps {
-  selectedCell: Dict;
-  setSelectedCell
-}
-
-const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setSelectedCell }) => {
+const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setSelectedCell, clusterID, setclusterID }) => {
 
   const [lng, setLng] = useState(103.851959);
   const [lat, setLat] = useState(1.290270);
@@ -45,7 +40,12 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
     const cell = event.features && event.features[0];
 
     if (cell && cell.properties) {
-      setSelectedCell(cell.properties);
+      setclusterID({"clusterID":cell.properties.cluster_ID, "uID": cell.properties.uID})
+
+      let props = cell.properties
+      delete props.cluster_ID
+      delete props.uID
+      setSelectedCell(props);
     } else {
       setSelectedCell({ nothing_selected: "Select a Cell to Continue" });
     }
