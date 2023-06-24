@@ -11,7 +11,7 @@ const Layout = (props: PropsWithChildren) => {
       </div>
 
       <div className="grid md:grid-cols-sidebar ">
-        <Sidebar selectedCell = {props.selectedCell} setSelectedCell = {props.setSelectedCell} city_data = {props.city_data}/>
+        <Sidebar selectedCell = {props.selectedCell} setSelectedCell = {props.setSelectedCell} city_data = {props.city_data} clusterID = {props.clusterID} setclusterID = {props.setclusterID} />
         {props.children}
       </div>
     </div>
