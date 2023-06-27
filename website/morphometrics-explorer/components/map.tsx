@@ -101,9 +101,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
       const stops = Array(num_clusters).fill(null).map((_, i) => {
         return [i, colorScale(data[i])];
       });
-
-      console.log(stops);
-
+      
       // For more information on data-driven styles, see https://www.mapbox.com/help/gl-dds-ref/
       setPaint({
         'fill-color': {
