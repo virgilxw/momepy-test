@@ -57,8 +57,6 @@ const ViolinShape = ({
     return false
   }
 
-  console.log('%cViolinShape.tsx line:60 targetValue', 'color: #007acc;', targetValue);
-
   if (noTarget(targetValue)) {
     return (
       <>
