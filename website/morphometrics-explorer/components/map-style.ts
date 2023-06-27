@@ -1,6 +1,6 @@
 import type {FillLayer} from 'react-map-gl';
 
-export const tessPolyLayer: FillLayer = {
+export const tessPolyLayer : FillLayer = {
   id: 'tess',
   type: 'fill',
   'source-layer': 'trees',
