@@ -65,9 +65,22 @@ const ViolinShape = ({
 
         <rect x={xScale(targetValue[0])} y={0} width={xScale(targetValue[2]) - xScale(targetValue[0])} height={height} fill="red" fillOpacity={0.1} strokeWidth={1} stroke="red" ></rect>
       </>
-    );
+    )
   }
-
+  else if (targetValue === null) {
+    return (
+      <>
+        <path
+          d={areaPath || undefined}
+          opacity={1}
+          stroke="#9a6fb0"
+          fill="#9a6fb0"
+          fillOpacity={0.1}
+          strokeWidth={2}
+        />
+      </>
+    )
+  }
 
   return (
     <>
