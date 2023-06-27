@@ -99,7 +99,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
       // Create color stops
       const stops = Array(num_clusters).fill(null).map((_, i) => {
-        return [i, colorScale(i)];
+        return [i, colorScale(data[i])];
       });
 
       console.log(stops);
