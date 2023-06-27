@@ -38,6 +38,14 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
   const onClick = useCallback(event => {
 
     const cell = event.features && event.features[0];
+    
+    setClickInfo({
+      longitude: event.lngLat.lng,
+      latitude: event.lngLat.lat,
+      cellName: cell && cell.properties.uID,
+      clusterID: cell && cell.properties.clusterID,
+      props: cell && cell.properties
+    });
 
     if (cell && cell.properties) {
       setclusterID({"clusterID":cell.properties.cluster_ID, "uID": cell.properties.uID})
@@ -50,17 +58,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
       setSelectedCell({ nothing_selected: "Select a Cell to Continue" });
     }
 
-    setClickInfo({
-      longitude: event.lngLat.lng,
-      latitude: event.lngLat.lat,
-      cellName: cell && cell.properties.uID,
-      clusterID: cell && cell.properties.clusterID,
-      props: cell && cell.properties
-    });
-
   }, []);
-
-
 
   const selectedCell_Mapbox_click = (clickInfo && clickInfo.cellName) || '';
   const filter_click = useMemo(() => ['in', 'uID', selectedCell_Mapbox_click], [selectedCell_Mapbox_click]);
