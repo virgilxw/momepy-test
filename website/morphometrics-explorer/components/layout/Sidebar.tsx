@@ -11,6 +11,8 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
         let nestedObject = {};
 
         const city_data_1 = city_data["singapore"]
+        delete city_data_1.cluster_ID
+        delete city_data_1.uID
 
         for (const key in city_data_1) {
             const regex = /_(25|50|75)$/;
