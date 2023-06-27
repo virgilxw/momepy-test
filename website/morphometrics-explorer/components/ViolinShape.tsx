@@ -43,7 +43,36 @@ const ViolinShape = ({
 
   const areaPath = areaBuilder(bins);
 
-  if (Array.isArray(targetValue)) {
+  const noTarget = (targetValue) => {
+    if (targetValue === null ) {
+      return true
+    }
+    
+    else if (Array.isArray(targetValue)) {
+      if (targetValue.some(item => item == null)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  console.log('%cViolinShape.tsx line:60 targetValue', 'color: #007acc;', targetValue);
+
+  if (noTarget(targetValue)) {
+    return (
+      <>
+        <path
+          d={areaPath || undefined}
+          opacity={1}
+          stroke="#9a6fb0"
+          fill="#9a6fb0"
+          fillOpacity={0.1}
+          strokeWidth={2}
+        />
+      </>
+    )
+  } else if (Array.isArray(targetValue)) {
     return (
       <>
         <path
@@ -64,20 +93,6 @@ const ViolinShape = ({
         />
 
         <rect x={xScale(targetValue[0])} y={0} width={xScale(targetValue[2]) - xScale(targetValue[0])} height={height} fill="red" fillOpacity={0.1} strokeWidth={1} stroke="red" ></rect>
-      </>
-    )
-  }
-  else if (targetValue === null) {
-    return (
-      <>
-        <path
-          d={areaPath || undefined}
-          opacity={1}
-          stroke="#9a6fb0"
-          fill="#9a6fb0"
-          fillOpacity={0.1}
-          strokeWidth={2}
-        />
       </>
     )
   }
