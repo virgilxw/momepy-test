@@ -90,7 +90,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
   }, [city]);
 
   useEffect(() => {
-    if (selectedVar === "cluster_ID" && data) { // Check if data is not null
+    if (selectedVar["value"] === "cluster_ID" && data) { // Check if data is not null
       const num_clusters = Object.keys(data).length;
 
       // Create a color scale
@@ -101,7 +101,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
       const stops = Array(num_clusters).fill(null).map((_, i) => {
         return [i, colorScale(data[i])];
       });
-      
+
       // For more information on data-driven styles, see https://www.mapbox.com/help/gl-dds-ref/
       setPaint({
         'fill-color': {
@@ -110,8 +110,10 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         },
         'fill-opacity': 0.8
       })
+
+      setSelectedVar({"value": "cluster_ID", "scale": stops})
     }
-  }, [selectedVar, data]); // Note the addition of data here
+  }, [selectedVar["value"], data]); // Note the addition of data here
 
   return (
     <>
@@ -136,7 +138,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
           <Layer {...tessSelectedLayer} filter={filter_click} />
         </Source>
       </Map>
-      <ControlPanel />
+      <ControlPanel selectedVar={selectedVar} setSelectedVar={setSelectedVar} />
     </>
   );
 }
