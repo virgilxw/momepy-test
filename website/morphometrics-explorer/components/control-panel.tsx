@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 function Legend({ data }) {
-  if (data === null) {
-    return null
-  } else
+  if (!data || data.length === 0) {
+    return null;
+  } else {
     return (
       <div className={`grid ${data.length > 10 ? 'grid-cols-2 gap-x-4' : ''}`}>
         <div>
@@ -32,9 +32,10 @@ function Legend({ data }) {
         }
       </div>
     );
+  }
 }
 
-function ControlPanel({ selectedVar, setSelectedVar }) {
+function ControlPanel({ selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale}) {
 
   const [data, setData] = useState(null);
 
@@ -58,20 +59,18 @@ function ControlPanel({ selectedVar, setSelectedVar }) {
       });
   }, [selectedVar]);
 
-  console.log('%ccontrol-panel.tsx line:61 data', 'color: #007acc;', selectedVar.value);
-
   return (
     <div className="control-panel container mx-auto" >
 
       <div className="flex">
         <div className="w-3/4 p-4">
-          <h3>Displayed Variable: {data && data[selectedVar.value] ? data[selectedVar.value]["name"] : 'N/A'} </h3>
-          <p>{data && data[selectedVar.value] ? data[selectedVar.value]["description"] : 'No description available'}</p>
+          <h3>Displayed Variable: {data && data[selectedVar] ? data[selectedVar]["name"] : 'N/A'} </h3>
+          <p>{data && data[selectedVar] ? data[selectedVar]["description"] : 'No description available'}</p>
         </div>
 
         <div className="w-1/4 py-4 px-8 text-right">
           <h1>Legend</h1>
-          {data && <Legend data={selectedVar.scale} />}
+          {data && <Legend data={selectedVarScale} />}
         </div>
       </div>
     </div>

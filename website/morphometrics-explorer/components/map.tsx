@@ -8,7 +8,7 @@ import * as d3 from 'd3';
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_mapboxglaccessToken; // Set your mapbox token here
 
-const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar }) => {
+const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale }) => {
 
   const [lng, setLng] = useState(103.851959);
   const [lat, setLat] = useState(1.290270);
@@ -91,13 +91,14 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
   }, [city]);
 
   useEffect(() => {
-    if (selectedVar["value"] === "weighted_difference_between_clusters" && data) { // Check if data is not null
+
+    if (selectedVar === "weighted_difference_between_clusters" && data) { // Check if data is not null
 
       const num_clusters = Object.keys(data).length;
 
       // Create a color scale
-      const colorScale = d3.scaleDiverging(t => d3.interpolateRdBu(1 - t))
-        .domain([-10, 10]);  // Adjust the domain according to your data range
+      const colorScale = d3.scaleDiverging(t => d3.interpolateRdYlGn(1 - t))
+        .domain([-10, 0, 10]);  // Adjust the domain according to your data range
 
       // Create color stops
       const stops = Array(num_clusters).fill(null).map((_, i) => {
@@ -113,14 +114,14 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         'fill-opacity': 0.8
       })
 
-      setSelectedVar({ "value": "weighted_difference_between_clusters", "scale": stops })
-    } else if (selectedVar["value"] === "cluster_ID" && data) { // Check if data is not null
+      setSelectedVarScale(stops)
+    } else if (selectedVar === "cluster_ID" && data) { // Check if data is not null
 
       const num_clusters = Object.keys(data).length;
 
       // Create a color scale
       const colorScale = d3.scaleDiverging(t => d3.interpolateRdYlGn(1 - t))
-        .domain([0, num_clusters/2, num_clusters]);  // Adjust the domain according to your data range
+        .domain([0, num_clusters / 2, num_clusters]);  // Adjust the domain according to your data range
 
       // Create color stops
       const stops = Array(num_clusters).fill(null).map((_, i) => {
@@ -136,9 +137,9 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         'fill-opacity': 0.8
       })
 
-      setSelectedVar({ "value": "cluster_ID", "scale": stops })
+      setSelectedVarScale(stops)
     }
-  }, [selectedVar["value"], data]); // Note the addition of data here
+  }, [selectedVar, data]); // Note the addition of data here
 
   return (
     <>
@@ -163,7 +164,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
           <Layer {...tessSelectedLayer} filter={filter_click} />
         </Source>
       </Map>
-      <ControlPanel selectedVar={selectedVar} setSelectedVar={setSelectedVar} />
+      <ControlPanel selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} />
     </>
   );
 }

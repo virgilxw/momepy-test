@@ -20,16 +20,16 @@ export async function getStaticProps() {
 import React, { useState, useEffect, useRef } from "react";
 interface HomeProps {
   selectedCell: Dict;
-  setSelectedCell
+  selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale
 }
 
-const Home: React.FC<PropsWithChildren<HomeProps>> = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar}) => {
+const Home: React.FC<PropsWithChildren<HomeProps>> = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale }) => {
 
 
   return (
-    <Layout city_data={city_data} selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar}>
+    <Layout city_data={city_data} selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale}>
       <main className={`flex min-h-[16] flex-col items-center ${inter.className}`}>
-        <MapCont selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} city_data= {city_data}/>
+        <MapCont selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} city_data={city_data} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} />
       </main>
     </Layout>
   );

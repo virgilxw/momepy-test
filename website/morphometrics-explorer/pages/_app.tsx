@@ -9,11 +9,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const [selectedCell, setSelectedCell] = useState({ nothing_selected: "Select a Cell to Continue" });
   const [clusterID, setclusterID] = useState(0);
-  const [selectedVar, setSelectedVar] = useState({"value": "cluster_ID", "scale":null})
+  const [selectedVar, setSelectedVar] = useState("cluster_ID")
+  const [selectedVarScale, setSelectedVarScale] = useState(null)
 
   return (
     <MapProvider>
-      <Component selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} {...pageProps} />
+      <Component selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} {...pageProps} />
     </MapProvider>
   );
 }

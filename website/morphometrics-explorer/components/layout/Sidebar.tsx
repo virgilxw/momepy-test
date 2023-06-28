@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import ViolinPlot from "../ViolinShape";
 import Dropdown from "../sidebar-dropdown";
 
-const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar }) => {
+const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setselectedVarScale}) => {
 
     const sidebarWidth = 266
     const [nestedCellData, setNestedCellData] = useState({});
@@ -70,6 +70,7 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
     const [isButton2Active, setButton2Active] = useState(false);
 
     const handleButton1Click = () => {
+        setSelectedVar("cluster_ID")
         setButton1Active(!isButton1Active);
         if (isButton2Active) {
             setButton2Active(false);
@@ -77,12 +78,12 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
     };
 
     const handleButton2Click = () => {
+        setSelectedVar("weighted_difference_between_clusters")
         setButton2Active(!isButton2Active);
         if (isButton1Active) {
             setButton1Active(false);
         }
     };
-
 
 
     return (
@@ -92,15 +93,21 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
             <div className="inline-flex">
                 <button
                     onClick={handleButton1Click}
-                    className={`bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l ${isButton1Active ? 'bg-blue-500' : ''}`}
+                    className={`bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l ${isButton1Active ? 'bg-gray-400' : ''}`}
                 >
-                    {isButton1Active ? 'Button 1 Active' : 'Button 1 Inactive'}
+                    <div className="flex flex-col items-center">
+                        <span>Urban Type</span>
+                        <span>Equal Intervals</span>
+                    </div>
                 </button>
                 <button
                     onClick={handleButton2Click}
-                    className={`bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r ${isButton2Active ? 'bg-blue-500' : ''}`}
+                    className={`bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r ${isButton2Active ? 'bg-gray-400' : ''}`}
                 >
-                    {isButton2Active ? 'Button 2 Active' : 'Button 2 Inactive'}
+                    <div className="flex flex-col items-center">
+                        <span>Urban Type</span>
+                        <span>1-Dimension</span>
+                    </div>
                 </button>
             </div>
             {
