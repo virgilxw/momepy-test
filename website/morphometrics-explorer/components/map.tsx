@@ -174,8 +174,9 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
       setSelectedVarScale(stops)
     } else {
-      console.log('%cmap.tsx line:177 jenks["singapore"]', 'color: #007acc;', jenks["singapore"]);
     }
+    
+    console.log('%cmap.tsx line:177 jenks["singapore"]', 'color: #007acc;', jenks && jenks["singapore"]);
 
   }, [selectedVar, data, jenks]); // Note the addition of data here
 
