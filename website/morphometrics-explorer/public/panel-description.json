@@ -1,4 +1,4 @@
-{"Cluster_ID":{
+{"cluster_ID":{
     "name": "Urban Type ID",
     "description": "Urban Types are clusters are generated through a Gaussian Mixture Model on a matrix of Principal Components on the many different variables measured for each building. Buildings (with the data points from the elements of the street network closest to it and their corresponding tessellation plot cell) are grouped together into clusters, displayed in this choropleth map. The differences between clusters is decomposed into one dimension and sorted; there should be equal change in colour between each cluster type in this palette."
 }
