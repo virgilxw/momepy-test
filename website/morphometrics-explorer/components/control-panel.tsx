@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Legend({ data }) {
   if (data === null) {
@@ -36,21 +36,40 @@ function Legend({ data }) {
 
 function ControlPanel({ selectedVar, setSelectedVar }) {
 
-  console.log('%ccontrol-panel.tsx line:5 selectedVar.scale', 'color: #007acc;', selectedVar.scale);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Fetch the JSON file
+    fetch('panel-description.json')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        return response.json(); // This returns a promise
+      })
+      .then((data) => {
+        // Update the state to trigger a re-render.
+        // Note that "data" is an object and will be added to the list
+        setData(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, [selectedVar]);
+
   return (
     <div className="control-panel container mx-auto" >
 
       <div className="flex">
-        {/* Component 1 */}
         <div className="w-3/4 p-4">
-          <h3>Displayed Variable: {selectedVar.value} </h3>
-          <p>{`The clusters are generated through a Gaussian Mixture Model on a matrix of Principal Components on the many different variables measured for each building. Buildings (with the data points from the elements of the street network closest to it and their corresponding tessellation plot cell) are grouped together into clusters, displayed in this choropleth map. The color key of the map represents the reduction of differences between each cluster to a one-dimensional scale. Very generally speaking, the more different the color key of a cluster is from another, the more different the clusters are from one another.`}</p>
+          <h3>Displayed Variable: {data && data[selectedVar.value] ? data[selectedVar.value]["name"] : 'N/A'} </h3>
+          <p>{data && data[selectedVar.value] ? data[selectedVar.value]["description"] : 'No description available'}</p>
         </div>
 
-        {/* Component 2 */}
         <div className="w-1/4 py-4 px-8 text-right">
           <h1>Legend</h1>
-          <Legend data={selectedVar.scale} />
+          {data && <Legend data={selectedVar.scale} />}
         </div>
       </div>
     </div>
