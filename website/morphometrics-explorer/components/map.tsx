@@ -18,6 +18,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
   const [hoverInfo, setHoverInfo] = useState(null);
   const [clickInfo, setClickInfo] = useState(null);
+  const { mapID } = useMap()
 
   const onHover = useCallback(event => {
 
@@ -90,25 +91,40 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
       });
   }, [city]);
 
+  console.log('%cmap.tsx line:94 city_', 'color: #007acc;', selectedCell);
+
   useEffect(() => {
 
-    if (selectedVar === "weighted_difference_between_clusters" && data) { // Check if data is not null
+    if (selectedVar === "one_dimensional_diff_between_clusters" && data) { // Check if data is not null
 
       const num_clusters = Object.keys(data).length;
+      const min = -10
+      const max = 10
 
       // Create a color scale
       const colorScale = d3.scaleDiverging(t => d3.interpolateRdYlGn(1 - t))
-        .domain([-10, 0, 10]);  // Adjust the domain according to your data range
+        .domain([min, (max + min) / 2, max]);  // Adjust the domain according to your data range
+
+      function generateStops(min, max, colorScale) {
+        const count = 16; // Number of stops
+        const step = (max - min) / (count - 1); // Calculate the step size
+
+        const stops = Array.from({ length: count }, (_, i) => {
+          const value = min + (i * step);
+          const roundedValue = Number(value.toPrecision(3));
+          return [roundedValue, colorScale(value)];
+        });
+
+        return stops;
+      }
 
       // Create color stops
-      const stops = Array(num_clusters).fill(null).map((_, i) => {
-        return [i, colorScale(data[i])];
-      });
+      const stops = generateStops(min, max, colorScale)
 
       // For more information on data-driven styles, see https://www.mapbox.com/help/gl-dds-ref/
       setPaint({
         'fill-color': {
-          property: 'weighted_difference_between_clusters',
+          property: 'one_dimensional_diff_between_clusters',
           stops: stops
         },
         'fill-opacity': 0.8
@@ -139,6 +155,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
       setSelectedVarScale(stops)
     }
+
   }, [selectedVar, data]); // Note the addition of data here
 
   return (

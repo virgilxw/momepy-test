@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import ViolinPlot from "../ViolinShape";
 import Dropdown from "../sidebar-dropdown";
 
-const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setselectedVarScale}) => {
+const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setselectedVarScale }) => {
 
     const sidebarWidth = 266
     const [nestedCellData, setNestedCellData] = useState({});
@@ -66,7 +66,7 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
         }
     }, [selectedCell]);
 
-    const [isButton1Active, setButton1Active] = useState(false);
+    const [isButton1Active, setButton1Active] = useState(true);
     const [isButton2Active, setButton2Active] = useState(false);
 
     const handleButton1Click = () => {
@@ -78,7 +78,7 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
     };
 
     const handleButton2Click = () => {
-        setSelectedVar("weighted_difference_between_clusters")
+        setSelectedVar("one_dimensional_diff_between_clusters")
         setButton2Active(!isButton2Active);
         if (isButton1Active) {
             setButton1Active(false);
@@ -93,7 +93,9 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
             <div className="inline-flex">
                 <button
                     onClick={handleButton1Click}
-                    className={`bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l ${isButton1Active ? 'bg-gray-400' : ''}`}
+                    className={`bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l ${isButton1Active ? "bg-gray-400" : ""
+                        }`}
+                    disabled={isButton1Active} // Disable button 1 when it is active
                 >
                     <div className="flex flex-col items-center">
                         <span>Urban Type</span>
@@ -102,7 +104,9 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
                 </button>
                 <button
                     onClick={handleButton2Click}
-                    className={`bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r ${isButton2Active ? 'bg-gray-400' : ''}`}
+                    className={`bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r ${isButton2Active ? "bg-gray-400" : ""
+                        }`}
+                    disabled={isButton2Active} // Disable button 2 when it is active
                 >
                     <div className="flex flex-col items-center">
                         <span>Urban Type</span>

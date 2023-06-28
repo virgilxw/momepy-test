@@ -1,5 +1,10 @@
-{"cluster_ID":{
-    "name": "Urban Type ID",
-    "description": "Urban Types are clusters are generated through a Gaussian Mixture Model on a matrix of Principal Components on the many different variables measured for each building. Buildings (with the data points from the elements of the street network closest to it and their corresponding tessellation plot cell) are grouped together into clusters, displayed in this choropleth map. The differences between clusters is decomposed into one dimension and sorted; there should be equal change in colour between each cluster type in this palette."
-}
+{
+    "cluster_ID": {
+        "name": "Urban Type ID",
+        "description": "Urban Types are clusters are generated through a Gaussian Mixture Model on a matrix of Principal Components on the many different variables measured for each building. Buildings (with the data points from the elements of the street network closest to it and their corresponding tessellation plot cell) are grouped together into clusters, displayed in this choropleth map. The differences between clusters is decomposed into one dimension and sorted; there should be equal change in colour between each cluster type in this palette."
+    },
+    "one_dimensional_diff_between_clusters": {
+        "name": "Representing Differences Between Urban Types On One Dimension",
+        "description": "Urban Types are clusters are generated through a Gaussian Mixture Model on a matrix of Principal Components on the many different variables measured for each building. Buildings (with the data points from the elements of the street network closest to it and their corresponding tessellation plot cell) are grouped together into clusters, displayed in this choropleth map. The differences between clusters is decomposed into one dimension; the relative difference between colours represent how similar or different each urban type is from one another"
+    }
 }
