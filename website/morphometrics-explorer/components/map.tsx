@@ -14,6 +14,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
   const [lat, setLat] = useState(1.290270);
   const [zoom, setZoom] = useState(15);
   const [city, setCity] = useState("singapore")
+  const [jenks, setJenks] = useState(null)
 
 
   const [hoverInfo, setHoverInfo] = useState(null);
@@ -91,7 +92,25 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
       });
   }, [city]);
 
-  console.log('%cmap.tsx line:94 city_', 'color: #007acc;', selectedCell);
+  useEffect(() => {
+    // Fetch the JSON file
+    fetch('jenks.json')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        return response.json(); // This returns a promise
+      })
+      .then((data) => {
+        // Update the state to trigger a re-render.
+        // Note that "data" is an object and will be added to the list
+        setJenks(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  },[]);
 
   useEffect(() => {
 
@@ -154,9 +173,11 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
       })
 
       setSelectedVarScale(stops)
+    } else {
+      console.log('%cmap.tsx line:177 jenks["singapore"]', 'color: #007acc;', jenks["singapore"]);
     }
 
-  }, [selectedVar, data]); // Note the addition of data here
+  }, [selectedVar, data, jenks]); // Note the addition of data here
 
   return (
     <>

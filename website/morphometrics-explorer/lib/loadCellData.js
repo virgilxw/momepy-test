@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Papa from 'papaparse';
 import _ from 'lodash';
+import { Jenks } from './jenks'
 
 const fetchData = async () => {
     // // Fetch the CSV data and process it using Papa.parse
@@ -59,7 +60,22 @@ export async function loadCellData() {
             }
         })
 
-        output[fileName.slice(0, -4)] = _.mapValues(output_1,list => _.sampleSize(list, 400))
+        // const object = new Jenks(output_1["tess_covered_area"].filter(item => typeof item === 'number'), 8).naturalBreak()
+
+        function filterNumbers(data) {
+            const numbers = [];
+            for (const item of data) {
+                try {
+                    const number = parseFloat(item);
+                    numbers.push(number);
+                } catch (error) {
+                    // Ignore elements that are not numbers
+                }
+            }
+            return numbers;
+        }
+
+        output[fileName.slice(0, -4)] = _.mapValues(output_1, list => _.sampleSize(list, 400))
     })
 
     return output
