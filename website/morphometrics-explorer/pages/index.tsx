@@ -29,7 +29,7 @@ const Home: React.FC<PropsWithChildren<HomeProps>> = ({ city_data, selectedCell,
   return (
     <Layout city_data={city_data} selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar}>
       <main className={`flex min-h-[16] flex-col items-center ${inter.className}`}>
-        <MapCont selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar}/>
+        <MapCont selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} city_data= {city_data}/>
       </main>
     </Layout>
   );

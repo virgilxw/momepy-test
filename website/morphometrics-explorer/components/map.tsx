@@ -77,6 +77,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+
         return response.json(); // This returns a promise
       })
       .then((data) => {
@@ -90,17 +91,45 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
   }, [city]);
 
   useEffect(() => {
-    if (selectedVar["value"] === "cluster_ID" && data) { // Check if data is not null
+    if (selectedVar["value"] === "weighted_difference_between_clusters" && data) { // Check if data is not null
+
       const num_clusters = Object.keys(data).length;
 
       // Create a color scale
-      const colorScale = d3.scaleSequential(d3.interpolateSpectral)
-        .domain([0, num_clusters]);  // Adjust the domain according to your data range
+      const colorScale = d3.scaleDiverging(t => d3.interpolateRdBu(1 - t))
+        .domain([-10, 10]);  // Adjust the domain according to your data range
 
       // Create color stops
       const stops = Array(num_clusters).fill(null).map((_, i) => {
         return [i, colorScale(data[i])];
       });
+
+      // For more information on data-driven styles, see https://www.mapbox.com/help/gl-dds-ref/
+      setPaint({
+        'fill-color': {
+          property: 'weighted_difference_between_clusters',
+          stops: stops
+        },
+        'fill-opacity': 0.8
+      })
+
+      setSelectedVar({ "value": "weighted_difference_between_clusters", "scale": stops })
+    } else if (selectedVar["value"] === "cluster_ID" && data) { // Check if data is not null
+
+      const num_clusters = Object.keys(data).length;
+
+      console.log('%cmap.tsx line:121 num_clusters', 'color: #007acc;', num_clusters);
+
+      // Create a color scale
+      const colorScale = d3.scaleDiverging(t => d3.interpolateRdYlGn(1 - t))
+        .domain([0, num_clusters/2, num_clusters]);  // Adjust the domain according to your data range
+
+      // Create color stops
+      const stops = Array(num_clusters).fill(null).map((_, i) => {
+        return [i, colorScale(i)];
+      });
+
+      console.log('%cmap.tsx line:130 stops', 'color: #007acc;', stops);
 
       // For more information on data-driven styles, see https://www.mapbox.com/help/gl-dds-ref/
       setPaint({
@@ -111,7 +140,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         'fill-opacity': 0.8
       })
 
-      setSelectedVar({"value": "cluster_ID", "scale": stops})
+      setSelectedVar({ "value": "cluster_ID", "scale": stops })
     }
   }, [selectedVar["value"], data]); // Note the addition of data here
 
