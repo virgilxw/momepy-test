@@ -129,8 +129,6 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         return [i, colorScale(i)];
       });
 
-      console.log('%cmap.tsx line:130 stops', 'color: #007acc;', stops);
-
       // For more information on data-driven styles, see https://www.mapbox.com/help/gl-dds-ref/
       setPaint({
         'fill-color': {
