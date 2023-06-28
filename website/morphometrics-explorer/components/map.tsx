@@ -118,8 +118,6 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
       const num_clusters = Object.keys(data).length;
 
-      console.log('%cmap.tsx line:121 num_clusters', 'color: #007acc;', num_clusters);
-
       // Create a color scale
       const colorScale = d3.scaleDiverging(t => d3.interpolateRdYlGn(1 - t))
         .domain([0, num_clusters/2, num_clusters]);  // Adjust the domain according to your data range

@@ -58,6 +58,8 @@ function ControlPanel({ selectedVar, setSelectedVar }) {
       });
   }, [selectedVar]);
 
+  console.log('%ccontrol-panel.tsx line:61 data', 'color: #007acc;', selectedVar.value);
+
   return (
     <div className="control-panel container mx-auto" >
 
