@@ -23,13 +23,13 @@ interface HomeProps {
   selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale
 }
 
-const Home: React.FC<PropsWithChildren<HomeProps>> = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale }) => {
+const Home: React.FC<PropsWithChildren<HomeProps>> = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale, selectedCity, setSelectedCity }) => {
 
 
   return (
-    <Layout city_data={city_data} selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale}>
+    <Layout city_data={city_data} selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} selectedCity={selectedCity} setSelectedCity={setSelectedCity} >
       <main className={`flex min-h-[16] flex-col items-center ${inter.className}`}>
-        <MapCont selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} city_data={city_data} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} />
+        <MapCont selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} city_data={city_data} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} selectedCity={selectedCity} setSelectedCity={setSelectedCity} />
       </main>
     </Layout>
   );
