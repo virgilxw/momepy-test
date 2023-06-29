@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 function Legend({ data }) {
+
+  console.log('%ccontrol-panel.tsx line:5 data', 'color: #007acc;', data);
   if (!data || data.length === 0) {
     return null;
-  } else {
+  } else if (data.length > 8) {
     return (
-      <div className={`grid ${data.length > 10 ? 'grid-cols-2 gap-x-4' : ''}`}>
+      <div className={`grid grid-cols-2 gap-x-4`}>
         <div>
           {data.slice(0, Math.ceil(data.length / 2)).map(([value, color], index) => (
             <div key={value + index} className="flex items-center space-x-2">
@@ -17,25 +19,39 @@ function Legend({ data }) {
             </div>
           ))}
         </div>
-        {data.length > 10 &&
-          <div>
-            {data.slice(Math.ceil(data.length / 2)).map(([value, color], index) => (
-              <div key={value + index} className="flex items-center space-x-2">
-                <div
-                  style={{ backgroundColor: color }}
-                  className="w-6 h-3 border rounded"
-                />
-                <div className="text-xs">{value}</div>
-              </div>
-            ))}
-          </div>
-        }
+        <div>
+          {data.slice(Math.ceil(data.length / 2)).map(([value, color], index) => (
+            <div key={value + index} className="flex items-center space-x-2">
+              <div
+                style={{ backgroundColor: color }}
+                className="w-6 h-3 border rounded"
+              />
+              <div className="text-xs">{value}</div>
+            </div>
+          ))}
+        </div>
       </div>
     );
+  } else {
+    return (
+      <div className={`grid grid-cols-2 gap-x-4`}>
+        <div>
+          {data.map(([value, color], index) => (
+            <div key={value + index} className="flex items-center space-x-2">
+              <div
+                style={{ backgroundColor: color }}
+                className="w-6 h-3 border rounded"
+              />
+              <div className="text-xs">{value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
   }
 }
 
-function ControlPanel({ selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale}) {
+function ControlPanel({ selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale }) {
 
   const [data, setData] = useState(null);
 
