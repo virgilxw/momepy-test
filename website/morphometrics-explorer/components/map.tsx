@@ -172,6 +172,8 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         'fill-opacity': 0.8
       })
 
+      console.log('%cmap.tsx line:175 stops', 'color: #007acc;', stops);
+
       setSelectedVarScale(stops)
     } else {
       if (jenks != null) {
@@ -182,29 +184,37 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         // Create a color scale
         const colorScale = d3.scaleDiverging(t => d3.interpolateRdYlGn(1 - t))
           .domain([min, (min + max) / 2, max]);  // Adjust the domain according to your data range
-        // Generate the steps for the 'fill-color' property
-        const steps = [];
+        // Generate the stops for the 'fill-color' property
+        const stops = [];
 
-        steps.push(colorScale(min))
+        stops.push(colorScale(min))
 
         buckets.forEach(bucket => {
           const [bucketMin, bucketMax] = bucket;
           const color = colorScale((bucketMin + bucketMax) / 2);  // Use the midpoint of each bucket for color mapping
-          steps.push(bucketMin, color);
+          stops.push(bucketMin, color);
         });
-        
-        steps.push(Number(max), colorScale(max));  // Add the maximum value and its color
 
-        // Set the 'fill-color' property using the steps
+        stops.push(Number(max), colorScale(max));  // Add the maximum value and its color
+
+        // Set the 'fill-color' property using the stops
         setPaint({
-          'fill-color': ['step', ['get', selectedVar], ...steps],
+          'fill-color': ['step', ['get', selectedVar], ...stops],
           'fill-opacity': 0.8
         });
 
+        // Helper function to create pairs
+        const createPairs = (array) => {
+          let pairs = [];
+          for (let i = 0; i < array.length; i += 2) {
+            pairs.push(["<"+Math.round(array[i+1]*1000)/1000, array[i]]);
+          }
+          return pairs.slice(1, pairs.length - 1);
+        }
+
+        setSelectedVarScale(createPairs(stops))
       }
-
     }
-
   }, [selectedVar, data, jenks]); // Note the addition of data here
 
   return (
