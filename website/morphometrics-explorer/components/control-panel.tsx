@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 function Legend({ data }) {
 
-  console.log('%ccontrol-panel.tsx line:5 data', 'color: #007acc;', data);
   if (!data || data.length === 0) {
     return null;
   } else if (data.length > 8) {
@@ -51,7 +50,7 @@ function Legend({ data }) {
   }
 }
 
-function ControlPanel({ selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale }) {
+function ControlPanel({ selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale, selectedCity, setSelectedCity}) {
 
   const [data, setData] = useState(null);
 

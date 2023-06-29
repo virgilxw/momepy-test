@@ -8,12 +8,11 @@ import * as d3 from 'd3';
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_mapboxglaccessToken; // Set your mapbox token here
 
-const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale }) => {
+const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale, selectedCity, setSelectedCity }) => {
 
   const [lng, setLng] = useState(103.851959);
   const [lat, setLat] = useState(1.290270);
   const [zoom, setZoom] = useState(15);
-  const [city, setCity] = useState("singapore")
   const [jenks, setJenks] = useState(null)
 
 
@@ -74,7 +73,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
   useEffect(() => {
     // Fetch the JSON file
-    fetch('singapore_weighted_mean.json')
+    fetch('weighted_mean.json')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -85,12 +84,12 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
       .then((data) => {
         // Update the state to trigger a re-render.
         // Note that "data" is an object and will be added to the list
-        setData(data);
+        setData(data[selectedCity]);
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-  }, [city]);
+  }, [selectedCity]);
 
   useEffect(() => {
     // Fetch the JSON file
@@ -172,14 +171,12 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         'fill-opacity': 0.8
       })
 
-      console.log('%cmap.tsx line:175 stops', 'color: #007acc;', stops);
-
       setSelectedVarScale(stops)
     } else {
       if (jenks != null) {
-        const buckets = jenks["singapore"][selectedVar]["classes"]
-        const min = Number(jenks["singapore"][selectedVar]["min"])
-        const max = Number(jenks["singapore"][selectedVar]["max"])
+        const buckets = jenks[selectedCity][selectedVar]["classes"]
+        const min = Number(jenks[selectedCity][selectedVar]["min"])
+        const max = Number(jenks[selectedCity][selectedVar]["max"])
 
         const num_clusters = buckets.length
 
@@ -217,7 +214,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         setSelectedVarScale(createPairs(stops))
       }
     }
-  }, [selectedVar, data, jenks]); // Note the addition of data here
+  }, [selectedVar, data, jenks, selectedCity]); // Note the addition of data here
 
   return (
     <>
@@ -242,7 +239,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
           <Layer {...tessSelectedLayer} filter={filter_click} />
         </Source>
       </Map>
-      <ControlPanel selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} />
+      <ControlPanel selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} selectedCity={selectedCity} setSelectedCity={setSelectedCity}  />
     </>
   );
 }

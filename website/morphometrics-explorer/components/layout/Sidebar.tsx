@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import ViolinPlot from "../ViolinShape";
 import Dropdown from "../sidebar-dropdown";
 
-const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setselectedVarScale }) => {
+const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setselectedVarScale, selectedCity, setSelectedCity }) => {
 
     const sidebarWidth = 266
     const [nestedCellData, setNestedCellData] = useState({});
@@ -10,7 +10,7 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
     const default_sidebar = () => {
         let nestedObject = {};
 
-        const city_data_1 = city_data["singapore"]
+        const city_data_1 = city_data[selectedCity]
         delete city_data_1.cluster_ID
         delete city_data_1.uID
 
@@ -37,7 +37,7 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
 
     useEffect(() => {
         default_sidebar();
-    }, []);
+    }, [selectedCity]);
 
     useEffect(() => {
         if (!Object.keys(selectedCell).includes("nothing_selected")) {
@@ -98,13 +98,13 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
                             <h3 className="text-lg font-bold mb-2">{key}</h3>
                             <p>{value["base"]}</p>
                             <ViolinPlot
-                                city_data={city_data["singapore"]}
+                                city_data={city_data[selectedCity]}
                                 width={sidebarWidth}
                                 height={50}
                                 plotKey={key}
                                 targetValue={value["base"]}
                             />
-                            <Dropdown city_data={city_data["singapore"]}
+                            <Dropdown city_data={city_data[selectedCity]}
                                 width={sidebarWidth}
                                 height={50}
                                 plotKey={key}
