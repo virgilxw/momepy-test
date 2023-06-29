@@ -181,21 +181,23 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         const min = Number(jenks["singapore"][selectedVar]["min"])
         const max = Number(jenks["singapore"][selectedVar]["max"])
 
+        const num_clusters = buckets.length
+
         // Create a color scale
         const colorScale = d3.scaleDiverging(t => d3.interpolateRdYlGn(1 - t))
-          .domain([min, (min + max) / 2, max]);  // Adjust the domain according to your data range
-        // Generate the stops for the 'fill-color' property
+          .domain([0, num_clusters / 2, num_clusters]);
+
         const stops = [];
 
         stops.push(colorScale(min))
 
-        buckets.forEach(bucket => {
+        buckets.forEach((bucket, index) => {
           const [bucketMin, bucketMax] = bucket;
-          const color = colorScale((bucketMin + bucketMax) / 2);  // Use the midpoint of each bucket for color mapping
+          const color = colorScale(index);  // Use the index of each bucket for color mapping
           stops.push(bucketMin, color);
         });
 
-        stops.push(Number(max), colorScale(max));  // Add the maximum value and its color
+        stops.push(Number(max), colorScale(num_clusters));  // Add the maximum value and its color
 
         // Set the 'fill-color' property using the stops
         setPaint({
@@ -207,7 +209,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         const createPairs = (array) => {
           let pairs = [];
           for (let i = 0; i < array.length; i += 2) {
-            pairs.push(["<"+Math.round(array[i+1]*1000)/1000, array[i]]);
+            pairs.push(["<" + Math.round(array[i + 1] * 1000) / 1000, array[i]]);
           }
           return pairs.slice(1, pairs.length - 1);
         }
