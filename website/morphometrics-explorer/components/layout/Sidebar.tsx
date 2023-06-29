@@ -66,36 +66,15 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
         }
     }, [selectedCell]);
 
-    const [isButton1Active, setButton1Active] = useState(true);
-    const [isButton2Active, setButton2Active] = useState(false);
-
-    const handleButton1Click = () => {
-        setSelectedVar("cluster_ID")
-        setButton1Active(!isButton1Active);
-        if (isButton2Active) {
-            setButton2Active(false);
-        }
-    };
-
-    const handleButton2Click = () => {
-        setSelectedVar("one_dimensional_diff_between_clusters")
-        setButton2Active(!isButton2Active);
-        if (isButton1Active) {
-            setButton1Active(false);
-        }
-    };
-
 
     return (
         <div className="sidebar shadow-md bg-zinc-50 overflow-y-auto">
             <h2>cell uID: {clusterID.uID} </h2>
             <h3>ClusterID: {clusterID.clusterID} </h3>
-            <div className="inline-flex">
+            <div className="inline-flex px-2">
                 <button
-                    onClick={handleButton1Click}
-                    className={`bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l ${isButton1Active ? "bg-gray-400" : ""
-                        }`}
-                    disabled={isButton1Active} // Disable button 1 when it is active
+                    onClick={() => setSelectedVar("cluster_ID")}
+                    className={`bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l ${selectedVar === "cluster_ID" ? 'bg-gray-400' : ''}`}
                 >
                     <div className="flex flex-col items-center">
                         <span>Urban Type</span>
@@ -103,10 +82,8 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
                     </div>
                 </button>
                 <button
-                    onClick={handleButton2Click}
-                    className={`bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r ${isButton2Active ? "bg-gray-400" : ""
-                        }`}
-                    disabled={isButton2Active} // Disable button 2 when it is active
+                    onClick={() => setSelectedVar("one_dimensional_diff_between_clusters")}
+                    className={`bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r ${selectedVar === "one_dimensional_diff_between_clusters" ? 'bg-gray-400' : ''}`}
                 >
                     <div className="flex flex-col items-center">
                         <span>Urban Type</span>
@@ -117,7 +94,7 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
             {
                 nestedCellData && Object.keys(nestedCellData).length > 0 ?
                     Object.entries(nestedCellData).map(([key, value]) => (
-                        <div key={key} className="p-4 border mb-4">
+                        <div key={key} className={`p-4 border mb-4 ${selectedVar === key ? 'bg-gray-400' : ''}`} onClick={() => setSelectedVar(key)}>
                             <h3 className="text-lg font-bold mb-2">{key}</h3>
                             <p>{value["base"]}</p>
                             <ViolinPlot
