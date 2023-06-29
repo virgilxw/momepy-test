@@ -110,7 +110,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
       .catch((error) => {
         console.error('Error:', error);
       });
-  },[]);
+  }, []);
 
   useEffect(() => {
 
@@ -174,9 +174,36 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
       setSelectedVarScale(stops)
     } else {
+      if (jenks != null) {
+        const buckets = jenks["singapore"][selectedVar]["classes"]
+        const min = Number(jenks["singapore"][selectedVar]["min"])
+        const max = Number(jenks["singapore"][selectedVar]["max"])
+
+        // Create a color scale
+        const colorScale = d3.scaleDiverging(t => d3.interpolateRdYlGn(1 - t))
+          .domain([min, (min + max) / 2, max]);  // Adjust the domain according to your data range
+        // Generate the steps for the 'fill-color' property
+        const steps = [];
+
+        steps.push(colorScale(min))
+
+        buckets.forEach(bucket => {
+          const [bucketMin, bucketMax] = bucket;
+          const color = colorScale((bucketMin + bucketMax) / 2);  // Use the midpoint of each bucket for color mapping
+          steps.push(bucketMin, color);
+        });
+        
+        steps.push(Number(max), colorScale(max));  // Add the maximum value and its color
+
+        // Set the 'fill-color' property using the steps
+        setPaint({
+          'fill-color': ['step', ['get', selectedVar], ...steps],
+          'fill-opacity': 0.8
+        });
+
+      }
+
     }
-    
-    console.log('%cmap.tsx line:177 jenks["singapore"]', 'color: #007acc;', jenks && jenks["singapore"]);
 
   }, [selectedVar, data, jenks]); // Note the addition of data here
 
