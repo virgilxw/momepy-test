@@ -1,12 +1,12 @@
 import type {FillLayer} from 'react-map-gl';
 
-export const tessPolyLayer: FillLayer = {
+export const tessPolyLayer : FillLayer = {
   id: 'tess',
   type: 'fill',
   'source-layer': 'trees',
   paint: {
     'fill-outline-color': 'rgba(0,0,0,0.1)',
-    'fill-color': 'rgba(0,0,0,0.1)'
+    'fill-color': 'rgba(253, 253, 253, 0.1)'
   }
 };
 // Highlighted county polygons
