@@ -1,17 +1,3 @@
-{
-    "singapore": {
-        "tess": "mapbox://virgilxw.singapore-tessellation",
-        "buildings": "mapbox://virgilxw.singapore-buildings",
-        "lnglat": [103.851959, 1.290270]
-    },
-    "glasgow": {
-        "tess": "mapbox://virgilxw.glasgow-tessellation",
-        "buildings": "mapbox://virgilxw.glasgow-buildings",
-        "lnglat": [-4.251433, 55.860916]
-    },
-    "turin": {
-        "tess": "mapbox://virgilxw.turin-tessellation",
-        "buildings": "mapbox://virgilxw.turin-buildings",
-        "lnglat": [7.742615, 45.116177]
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:3d77d1ceb2cc88cbd31d264bf166efd58a323cb511ac533f1abc688dbf76d895
+size 550
