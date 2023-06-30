@@ -12,10 +12,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [selectedVar, setSelectedVar] = useState("cluster_ID")
   const [selectedVarScale, setSelectedVarScale] = useState(null)
   const [selectedCity, setSelectedCity] = useState("singapore")
+  const [citiesList, setCitiesList] = useState(["singapore"])
 
   return (
     <MapProvider>
-      <Component selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} selectedCity={selectedCity} setSelectedCity={setSelectedCity} {...pageProps} />
+      <Component selectedCell={selectedCell} setSelectedCell={setSelectedCell} clusterID={clusterID} setclusterID={setclusterID} selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} selectedCity={selectedCity} setSelectedCity={setSelectedCity} citiesList={citiesList} setCitiesList={setCitiesList} {...pageProps} />
     </MapProvider>
   );
 }

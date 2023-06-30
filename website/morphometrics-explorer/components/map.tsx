@@ -8,13 +8,13 @@ import * as d3 from 'd3';
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_mapboxglaccessToken; // Set your mapbox token here
 
-const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale, selectedCity, setSelectedCity }) => {
+const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale, selectedCity, setSelectedCity, citiesList, setCitiesList }) => {
 
   const [lng, setLng] = useState(103.851959);
   const [lat, setLat] = useState(1.290270);
   const [zoom, setZoom] = useState(15);
   const [jenks, setJenks] = useState(null)
-
+  const [directory, setdirectory] = useState(null);
 
   const [hoverInfo, setHoverInfo] = useState(null);
   const [clickInfo, setClickInfo] = useState(null);
@@ -73,6 +73,28 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
   useEffect(() => {
     // Fetch the JSON file
+    fetch('layerDirectory.json')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        return response.json(); // This returns a promise
+      })
+      .then((data) => {
+        // Update the state to trigger a re-render.
+        // Note that "data" is an object and will be added to the list
+        setCitiesList(Object.keys(data));
+        setdirectory(data)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }, []);
+
+  useEffect(() => {
+    // Fetch the JSON file
     fetch('weighted_mean.json')
       .then((response) => {
         if (!response.ok) {
@@ -84,12 +106,13 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
       .then((data) => {
         // Update the state to trigger a re-render.
         // Note that "data" is an object and will be added to the list
-        setData(data[selectedCity]);
+        setData(data);
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-  }, [selectedCity]);
+
+  }, []);
 
   useEffect(() => {
     // Fetch the JSON file
@@ -112,10 +135,16 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
   }, []);
 
   useEffect(() => {
+    if (mapID && selectedCity && directory) {
+      mapID.flyTo({center: directory[selectedCity]["lnglat"], duration: 10000});
+    }
+  }, [mapID, selectedCity, directory]);
+
+  useEffect(() => {
 
     if (selectedVar === "one_dimensional_diff_between_clusters" && data) { // Check if data is not null
 
-      const num_clusters = Object.keys(data).length;
+      const num_clusters = Object.keys(data[selectedCity]).length;
       const min = -10
       const max = 10
 
@@ -151,7 +180,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
       setSelectedVarScale(stops)
     } else if (selectedVar === "cluster_ID" && data) { // Check if data is not null
 
-      const num_clusters = Object.keys(data).length;
+      const num_clusters = Object.keys(data[selectedCity]).length;
 
       // Create a color scale
       const colorScale = d3.scaleDiverging(t => d3.interpolateRdYlGn(1 - t))
@@ -218,7 +247,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
   return (
     <>
-      <Map
+      {directory && <Map
         initialViewState={{
           latitude: lat,
           longitude: lng,
@@ -233,13 +262,13 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         id="mapID"
 
       >
-        <Source type="vector" url="mapbox://virgilxw.singapore-tessellation">
+        <Source type="vector" url={directory[selectedCity]["tess"]}>
           <Layer {...tessPolyLayer} paint={tess_paint} />
           <Layer {...tessHighlightLayer} filter={filter_hover} />
           <Layer {...tessSelectedLayer} filter={filter_click} />
         </Source>
-      </Map>
-      <ControlPanel selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} selectedCity={selectedCity} setSelectedCity={setSelectedCity}  />
+      </Map>}
+      <ControlPanel selectedVar={selectedVar} setSelectedVar={setSelectedVar} selectedVarScale={selectedVarScale} setSelectedVarScale={setSelectedVarScale} selectedCity={selectedCity} setSelectedCity={setSelectedCity} />
     </>
   );
 }

@@ -7,7 +7,7 @@ const Layout = (props: PropsWithChildren) => {
   return (
     <div className="grid min-h-screen grid-rows-header bg-zinc-100">
       <div className="bg-white shadow-sm z-10">
-        <Navbar />
+        <Navbar selectedCity={props.selectedCity} setSelectedCity={props.setSelectedCity} citiesList={props.citiesList} setCitiesList={props.setCitiesList}/>
       </div>
 
       <div className="grid md:grid-cols-sidebar ">
