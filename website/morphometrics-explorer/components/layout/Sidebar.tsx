@@ -2,33 +2,70 @@ import React, { useState, useEffect, useRef } from "react";
 import ViolinPlot from "../ViolinShape";
 import Dropdown from "../sidebar-dropdown";
 
-const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setselectedVarScale, selectedCity, setSelectedCity }) => {
+interface CityData {
+    [key: string]: {
+        [key: string]: string[];
+    };
+}
 
+interface SidebarProps {
+    selectedCity: string;
+    setSelectedCity: React.Dispatch<React.SetStateAction<string>>;
+    selectedCell: { [key: string]: string };
+    setSelectedCell: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+    city_data: CityData;
+    clusterID: {
+        clusterID: number;
+        uID: number;
+    };
+    setclusterID: React.Dispatch<React.SetStateAction<number>>;
+    selectedVar: string;
+    setSelectedVar: React.Dispatch<React.SetStateAction<string>>;
+    selectedVarScale: [number, string][] | null;
+    setSelectedVarScale: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({
+    city_data,
+    selectedCell,
+    setSelectedCell,
+    clusterID,
+    setclusterID,
+    selectedVar,
+    setSelectedVar,
+    selectedVarScale,
+    setSelectedVarScale,
+    selectedCity,
+    setSelectedCity
+}) => {
     const sidebarWidth = 266
-    const [nestedCellData, setNestedCellData] = useState({});
+
+    type NestedCellData = {
+        [key: string]: {
+            25: number | null;
+            50: number | null;
+            75: number | null;
+            "base": number | null;
+        };
+    };
+
+    const [nestedCellData, setNestedCellData] = useState<NestedCellData>({});
+
+    const checkEnd = (str: string) => {
+        return str.endsWith("_25") || str.endsWith("_50") || str.endsWith("_75");
+    }
+
 
     const default_sidebar = () => {
-        let nestedObject = {};
+        let nestedObject: NestedCellData = {};
 
-        const city_data_1 = city_data[selectedCity]
-        delete city_data_1.cluster_ID
-        delete city_data_1.uID
-
+        const city_data_1 = city_data[selectedCity];
+        delete city_data_1.cluster_ID;
+        delete city_data_1.uID;
+        delete city_data_1.one_dimensional_diff_between_clusters
         for (const key in city_data_1) {
-            const regex = /_(25|50|75)$/;
-            const match = key.match(regex);
-
-            if (match) {
-                const subkey = key.replace(regex, '');
-                if (!nestedObject[subkey]) {
-                    nestedObject[subkey] = {};
-                }
-                nestedObject[subkey][match[1]] = null;
-            } else {
-                if (!nestedObject[key]) {
-                    nestedObject[key] = {};
-                }
-                nestedObject[key]["base"] = null;
+            if (!checkEnd(key)) {
+                nestedObject[key] = { 25: null, 50: null, 75: null, "base": null };
             }
         }
 
@@ -41,24 +78,37 @@ const Sidebar = ({ city_data, selectedCell, setSelectedCell, clusterID, setclust
 
     useEffect(() => {
         if (!Object.keys(selectedCell).includes("nothing_selected")) {
-            let nestedObject = {};
+            let nestedObject: NestedCellData = {};
+
+            const city_data_1 = city_data[selectedCity];
+            delete city_data_1.cluster_ID;
+            delete city_data_1.uID;
+            delete city_data_1.one_dimensional_diff_between_clusters
+
+            const checkEnd = (str: string) => {
+                return str.endsWith("_25") || str.endsWith("_50") || str.endsWith("_75");
+            }
+
+            for (const key in city_data_1) {
+                if (!checkEnd(key)) {
+                    nestedObject[key] = { 25: null, 50: null, 75: null, "base": null };
+                }
+            }
 
             for (const key in selectedCell) {
-                const regex = /_(25|50|75)$/;
-                const match = key.match(regex);
+                // Skip these keys
+                if (key === "one_dimensional_diff_between_clusters" || key === "uID" || key === "cluster_ID") {
+                    continue;
+                }
 
-                if (match) {
-                    const subkey = key.replace(regex, '');
-                    if (!nestedObject[subkey]) {
-                        nestedObject[subkey] = {};
-                    }
-                    nestedObject[subkey][match[1]] = selectedCell[key];
+                if (key.endsWith("_25")) {
+                    nestedObject[key.slice(0, -3)][25] = Number(selectedCell[key]);
+                } else if (key.endsWith("_50")) {
+                    nestedObject[key.slice(0, -3)][50] = Number(selectedCell[key]);
+                } else if (key.endsWith("_75")) {
+                    nestedObject[key.slice(0, -3)][75] = Number(selectedCell[key]);
                 } else {
-                    if (!nestedObject[key]) {
-                        nestedObject[key] = {};
-                    }
-                    nestedObject[key]["base"] = selectedCell[key];
-
+                    nestedObject[key]["base"] = Number(selectedCell[key])
                 }
             }
 

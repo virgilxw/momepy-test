@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-function Legend({ data }) {
+type DataType = [number, string];
+
+type LegendProps = {
+  data: DataType[];
+}
+
+function Legend({ data }: LegendProps) {
 
   if (!data || data.length === 0) {
     return null;
@@ -50,9 +56,34 @@ function Legend({ data }) {
   }
 }
 
-function ControlPanel({ selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale, selectedCity, setSelectedCity}) {
+type ControlPanelProps = {
+  selectedVar: string;
+  setSelectedVar: React.Dispatch<React.SetStateAction<string>>;
+  selectedVarScale: [number, string][];
+  setSelectedVarScale: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedCity: string;
+  setSelectedCity: React.Dispatch<React.SetStateAction<string>>;
+};
 
-  const [data, setData] = useState(null);
+function ControlPanel({
+  selectedVar,
+  setSelectedVar,
+  selectedVarScale,
+  setSelectedVarScale,
+  selectedCity,
+  setSelectedCity,
+}: ControlPanelProps) {
+
+  type DataType = {
+    name: string;
+    description: string;
+  }
+
+  type MyData = {
+    [key: string]: DataType;
+  }
+
+  const [data, setData] = useState<MyData | null>(null);
 
   useEffect(() => {
     // Fetch the JSON file

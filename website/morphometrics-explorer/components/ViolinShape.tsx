@@ -140,7 +140,7 @@ const ViolinPlot = ({ city_data, width, height, plotKey, targetValue }: ViolinPl
 
   useEffect(() => {
 
-    if (city_data != undefined) {
+    if (city_data && city_data[plotKey] != undefined) {
       const valueArray = city_data[plotKey].map(Number).filter((num): num is number => !isNaN(num));
 
       if (valueArray != undefined) {

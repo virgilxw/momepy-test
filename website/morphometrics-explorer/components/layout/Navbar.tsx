@@ -5,7 +5,14 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import classNames from "classnames";
 
-const Navbar = ({ selectedCity, setSelectedCity, citiesList, setCitiesList }) => {
+interface NavbarProps {
+  selectedCity: string;
+  setSelectedCity: React.Dispatch<React.SetStateAction<string>>;
+  citiesList: string[];
+  setCitiesList: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const Navbar = ({ selectedCity, setSelectedCity, citiesList, setCitiesList }: NavbarProps) => {
 
 
   return (
@@ -37,7 +44,7 @@ const Navbar = ({ selectedCity, setSelectedCity, citiesList, setCitiesList }) =>
           <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="py-1">
               {citiesList.filter(city => city !== selectedCity).map(city => (
-                <Menu.Item onClick={() => setSelectedCity(city)} key={city}>
+                <Menu.Item key={city}>
                   {({ active }) => (
                     <a
                       href="#"
@@ -45,6 +52,7 @@ const Navbar = ({ selectedCity, setSelectedCity, citiesList, setCitiesList }) =>
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                         'block px-4 py-2 text-sm'
                       )}
+                      onClick={() => setSelectedCity(city)}
                     >
                       {city}
                     </a>

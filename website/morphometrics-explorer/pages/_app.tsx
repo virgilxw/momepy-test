@@ -8,7 +8,7 @@ import { MapProvider } from 'react-map-gl';
 function MyApp({ Component, pageProps }: AppProps) {
 
   const [selectedCell, setSelectedCell] = useState({ nothing_selected: "Select a Cell to Continue" });
-  const [clusterID, setclusterID] = useState(0);
+  const [clusterID, setclusterID] = useState({ "clusterID": -1, "uID": -1 });
   const [selectedVar, setSelectedVar] = useState("cluster_ID")
   const [selectedVarScale, setSelectedVarScale] = useState(null)
   const [selectedCity, setSelectedCity] = useState("singapore")

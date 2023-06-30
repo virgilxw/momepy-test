@@ -1,28 +1,79 @@
-import * as React from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { render } from 'react-dom';
 import Map, { Popup, Source, Layer, useMap } from 'react-map-gl';
 import ControlPanel from '../components/control-panel';
 import { tessPolyLayer, tessHighlightLayer, tessSelectedLayer } from '../components/map-style';
 import * as d3 from 'd3';
+import mapboxgl from 'mapbox-gl';
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_mapboxglaccessToken; // Set your mapbox token here
+
+interface MapContProps {
+  selectedCity: string;
+  setSelectedCity: React.Dispatch<React.SetStateAction<string>>;
+  citiesList: string[];
+  setCitiesList: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedCell: { [key: string]: string };
+  setSelectedCell: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+  clusterID: {
+    clusterID: number;
+    uID: number;
+  };
+  setclusterID: React.Dispatch<React.SetStateAction<number>>;
+  selectedVar: string;
+  setSelectedVar: React.Dispatch<React.SetStateAction<string>>;
+  selectedVarScale: [number, string][] | null;
+  setSelectedVarScale: React.Dispatch<React.SetStateAction<string[]>>;
+}
 
 const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setSelectedCell, clusterID, setclusterID, selectedVar, setSelectedVar, selectedVarScale, setSelectedVarScale, selectedCity, setSelectedCity, citiesList, setCitiesList }) => {
 
   const [lng, setLng] = useState(103.851959);
   const [lat, setLat] = useState(1.290270);
   const [zoom, setZoom] = useState(15);
-  const [jenks, setJenks] = useState(null)
+
+  type classes = [number, number];
+  type EmptyObject = {
+    [key: string]: {};
+  }
+
+  type jenksVarValues = {
+    [key: string]: {
+      "classes": classes[],
+      "min": number,
+      "max": number
+    }
+  }
+
+  type jenksCountryObj = {
+    [key: string]: EmptyObject | jenksVarValues
+  }
+
+  interface jenksObj {
+    [key: string]: jenksCountryObj
+  }
+
+  const [jenks, setJenks] = useState<jenksObj | null>(null);
   const [directory, setdirectory] = useState(null);
 
-  const [hoverInfo, setHoverInfo] = useState(null);
-  const [clickInfo, setClickInfo] = useState(null);
+  interface infoObj {
+    longitude: number | null;
+    latitude: number | null;
+    cellName: number | null;
+    clusterID: number | null;
+    props: any
+  }
+
+
+  const [hoverInfo, setHoverInfo] = useState<infoObj | null>(null);
+  const [clickInfo, setClickInfo] = useState<infoObj | null>(null);
   const { mapID } = useMap()
 
-  const onHover = useCallback(event => {
+  const onHover = useCallback((event: any) => {
 
     const cell = event.features && event.features[0];
+
     setHoverInfo({
       longitude: event.lngLat.lng,
       latitude: event.lngLat.lat,
@@ -36,7 +87,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
   const selectedCell_Mapbox_hover = (hoverInfo && hoverInfo.cellName) || '';
   const filter_hover = useMemo(() => ['in', 'uID', selectedCell_Mapbox_hover], [selectedCell_Mapbox_hover]);
 
-  const onClick = useCallback(event => {
+  const onClick = useCallback((event: any) => {
 
     const cell = event.features && event.features[0];
 
@@ -49,7 +100,9 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
     });
 
     if (cell && cell.properties) {
-      setclusterID({ "clusterID": cell.properties.cluster_ID, "uID": cell.properties.uID })
+      const { cluster_ID, uID } = cell.properties;
+      setclusterID({ "clusterID": Number(cluster_ID), "uID": Number(uID) });
+
 
       let props = cell.properties
       delete props.cluster_ID
@@ -91,7 +144,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         // Note that "data" is an object and will be added to the list
         setCitiesList(Object.keys(data));
         setdirectory(data)
-        
+
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -134,6 +187,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         // Update the state to trigger a re-render.
         // Note that "data" is an object and will be added to the list
         setJenks(data);
+        console.log('%cmap.tsx line:157 data', 'color: #007acc;', data);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -142,7 +196,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
 
   useEffect(() => {
     if (mapID && selectedCity && directory) {
-      mapID.flyTo({center: directory[selectedCity]["lnglat"], duration: 10000});
+      mapID.flyTo({ center: directory[selectedCity]["lnglat"], duration: 10000 });
     }
   }, [mapID, selectedCity, directory]);
 
