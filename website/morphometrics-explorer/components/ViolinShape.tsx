@@ -7,7 +7,7 @@ type VerticalViolinShapeProps = {
   binNumber: number;
   xScale: d3.ScaleLinear<number, number, never>;
   height: number;
-  targetValue: number;
+  targetValue: number | number[] | null;
 };
 
 const ViolinShape = ({
@@ -43,11 +43,11 @@ const ViolinShape = ({
 
   const areaPath = areaBuilder(bins);
 
-  const noTarget = (targetValue) => {
-    if (targetValue === null ) {
+  const noTarget = (targetValue: number | number[] | null) => {
+    if (targetValue === null) {
       return true
     }
-    
+
     else if (Array.isArray(targetValue)) {
       if (targetValue.some(item => item == null)) {
         return true
@@ -105,13 +105,17 @@ const ViolinShape = ({
         fillOpacity={0.1}
         strokeWidth={2}
       />
-      <line
-        x1={xScale(targetValue)}
-        y1={0}
-        x2={xScale(targetValue)}
-        y2={height}
-        stroke="red"
-      />
+      {
+        !Array.isArray(targetValue) && targetValue !== null && (
+          <line
+            x1={xScale(targetValue)}
+            y1={0}
+            x2={xScale(targetValue)}
+            y2={height}
+            stroke="red"
+          />
+        )
+      }
     </>
   );
 };
