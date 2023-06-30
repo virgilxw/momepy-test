@@ -119,27 +119,44 @@ const ViolinShape = ({
     </>
   );
 };
-const ViolinPlot = ({ city_data, width, height, plotKey, targetValue }) => {
+
+type CityData = {
+  [key: string]: string[];
+};
+
+type ViolinPlotProps = {
+  city_data: CityData | null;
+  width: number;
+  height: number;
+  plotKey: string;
+  targetValue: number | null | number[];
+};
+
+const ViolinPlot = ({ city_data, width, height, plotKey, targetValue }: ViolinPlotProps) => {
   // Render the ViolinPlot component using the provided data and xScale
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<number[] | null>(null);
   const [xScale, setXScale] = useState(() => scaleLinear());
-
-  let valueArray = city_data[plotKey]
 
   useEffect(() => {
 
-    if (valueArray == undefined) {
-      return
+    if (city_data != undefined) {
+      const valueArray = city_data[plotKey].map(Number).filter((num): num is number => !isNaN(num));
+
+      if (valueArray != undefined) {
+        // Calculate the 0.05 and 0.95 percentiles
+        let p5 = quantile(valueArray.sort(), 0.05);
+        let p95 = quantile(valueArray, 0.95);
+
+        if (p5 !== undefined && p95 !== undefined) {
+
+          const yS = scaleLinear().domain([p5, p95]).range([0, width * 0.8]);
+
+          setData(valueArray);
+          setXScale(() => yS);
+        }
+      }
     }
-    // Calculate the 0.05 and 0.95 percentiles
-    let p5 = quantile(valueArray.sort(), 0.05);
-    let p95 = quantile(valueArray, 0.95);
-
-    const yS = scaleLinear().domain([p5, p95]).range([0, width * 0.8]);
-
-    setData(valueArray);
-    setXScale(() => yS);
   }, [])
 
   if (!data || !xScale) {
