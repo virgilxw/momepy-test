@@ -64,7 +64,12 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
   const selectedCell_Mapbox_click = (clickInfo && clickInfo.cellName) || '';
   const filter_click = useMemo(() => ['in', 'uID', selectedCell_Mapbox_click], [selectedCell_Mapbox_click]);
 
-  const [data, setData] = useState(null);
+  type NestedObjectType = {
+    [key: string]: {
+      [key: string]: number;
+    };
+  };
+  const [data, setData] = useState<NestedObjectType | null>(null);
   const [paint, setPaint] = useState({
     'fill-outline-color': 'rgba(0,0,0,0.1)',
     'fill-color': 'rgba(0,0,0,0.1)'
@@ -86,6 +91,7 @@ const MapCont: React.FC<PropsWithChildren<MapContProps>> = ({ selectedCell, setS
         // Note that "data" is an object and will be added to the list
         setCitiesList(Object.keys(data));
         setdirectory(data)
+        
       })
       .catch((error) => {
         console.error('Error:', error);
