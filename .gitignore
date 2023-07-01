@@ -3,4 +3,5 @@ _pycache_/*
 urbantypes*
 out/
 *.env
-city_data/
+# Local Netlify folder
+.netlify
